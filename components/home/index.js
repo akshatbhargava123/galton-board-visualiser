@@ -11,6 +11,8 @@ function Home() {
   }, []);
 
   const releaseBalls = (rowIdx, bucketIdx) => {
+    if (grid[rowIdx][bucketIdx] === 0) return;
+
     const newGrid = cloneDeep(grid);
     const rowBelowIdx = rowIdx + 1;
 
@@ -41,7 +43,10 @@ function Home() {
             {row.map((balls, bucketIdx) => (
               <div
                 key={bucketIdx}
-                className={`w-32 h-32 group bg-gray-100 flex items-center justify-center rounded-xl font-semibold text-2xl transition duration-200 hover:shadow-lg hover:bg-gray-200 cursor-pointer select-none`}
+                className={`
+                  w-32 h-32 group flex items-center justify-center font-semibold text-2xl transition duration-200 select-none rounded-xl
+                  ${balls !== 0 ? 'bg-gray-100 cursor-pointer hover:shadow-lg hover:bg-gray-200' : 'bg-gray-300 cursor-not-allowed'}
+                `}
                 onClick={() => releaseBalls(rowIdx, bucketIdx)}
               >
                 <CountUp
