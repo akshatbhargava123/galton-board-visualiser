@@ -1,8 +1,8 @@
-import CountUp from 'react-countup';
 import cloneDeep from 'lodash/cloneDeep';
 import { ResponsiveBar } from '@nivo/bar'
 import { useEffect, useRef, useState } from 'react';
 import { initGrid, runGaltonSimulation, TOTAL_BUCKETS } from '../../lib/galton-calculations';
+import Bucket from './Bucket';
 
 function Home() {
   const boardContainerRef = useRef();
@@ -51,7 +51,7 @@ function Home() {
   return (
     <div className="h-screen">
       <div className="shadow text-center bg-gray-50">
-        <h3 className="font-bold text-2xl pt-6 pb-2">Galton Visualizer!</h3>
+        <h3 className="font-extrabold text-2xl pt-6 pb-2">· Galton Board Visualiser ·</h3>
         <div className="pt-10 flex items-center justify-center">
           <div className="h-36 w-2/3">
             <ResponsiveBar
@@ -77,21 +77,11 @@ function Home() {
             `}
           >
             {row.map((balls, bucketIdx) => (
-              <div
+              <Bucket
                 key={bucketIdx}
-                className={`
-                  w-32 h-32 group flex items-center justify-center font-semibold text-2xl transition duration-200 select-none rounded-xl
-                  ${balls !== 0 ? 'bg-gray-100 cursor-pointer hover:shadow-lg hover:bg-gray-200' : 'bg-gray-300 cursor-not-allowed'}
-                `}
+                balls={balls}
                 onClick={() => releaseBalls(rowIdx, bucketIdx)}
-              >
-                <CountUp
-                  start={0}
-                  end={balls}
-                  duration={2}
-                  preserveValue
-                />
-              </div>
+              />
             ))}
           </div>
         ))}
