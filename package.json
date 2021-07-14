@@ -10,6 +10,8 @@
     "commit": "git-cz"
   },
   "dependencies": {
+    "@nivo/bar": "^0.72.0",
+    "@nivo/core": "^0.72.0",
     "git-cz": "^4.7.6",
     "lodash": "^4.17.21",
     "next": "11.0.1",
