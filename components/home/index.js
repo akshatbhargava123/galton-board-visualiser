@@ -1,7 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { initGrid } from '../../lib/galton-calculations';
 
 function Home() {
-  const [row] = useState(new Array(10).fill(0).map((_, i) => 10000))
+  const [grid, setGrid] = useState([]);
+
+  useEffect(() => {
+    setGrid(initGrid());
+  }, []);
 
   return (
     <div className="h-screen">
@@ -14,24 +19,18 @@ function Home() {
 
       <div className="p-10 overflow-y-scroll">
 
-        <div className="my-10 flex items-center justify-around">
-          {row.map((bucket, idx) => (
-            <div
-              key={idx}
-              className={`w-40 h-40 group bg-gray-100 flex items-center justify-center rounded-xl font-semibold text-2xl transition duration-200 hover:shadow-lg hover:bg-gray-200 cursor-pointer`}
-            >
-              <span>{bucket}</span>
-            </div>
-          ))}
-        </div>
-
-        <div className="flex items-center justify-around">
-          {row.map((bucket, idx) => (
-            <div key={idx} className="w-36 h-36 bg-gray-100 flex items-center justify-center rounded-xl font-semibold text-2xl">
-              {bucket}
-            </div>
-          ))}
-        </div>
+        {grid.map((row, rowIdx) => (
+          <div key={rowIdx} className="my-10 flex items-center justify-around">
+            {row.map((bucket, idx) => (
+              <div
+                key={idx}
+                className={`w-32 h-32 group bg-gray-100 flex items-center justify-center rounded-xl font-semibold text-2xl transition duration-200 hover:shadow-lg hover:bg-gray-200 cursor-pointer select-none`}
+              >
+                <span>{bucket}</span>
+              </div>
+            ))}
+          </div>
+        ))}
 
       </div>
     </div>
