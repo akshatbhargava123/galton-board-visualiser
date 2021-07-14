@@ -1,15 +1,28 @@
 import CountUp from 'react-countup';
 import cloneDeep from 'lodash/cloneDeep';
+import { ResponsiveBar } from '@nivo/bar'
 import { useEffect, useRef, useState } from 'react';
 import { initGrid, runGaltonSimulation, TOTAL_BUCKETS } from '../../lib/galton-calculations';
 
 function Home() {
   const boardContainerRef = useRef();
   const [grid, setGrid] = useState([]);
+  const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
     setGrid(initGrid());
   }, []);
+
+  useEffect(() => {
+    if (grid.length) {
+      const data = grid[grid.length - 1].map((balls, id) => ({
+        id,
+        value: balls,
+      }));
+  
+      setChartData(data);
+    }
+  }, [grid]);
 
   const releaseBalls = (rowIdx, bucketIdx) => {
     if (grid[rowIdx][bucketIdx] === 0) return;
@@ -39,8 +52,17 @@ function Home() {
     <div className="h-screen">
       <div className="shadow text-center bg-gray-50">
         <h3 className="font-bold text-2xl pt-6 pb-2">Galton Visualizer!</h3>
-        <div className="h-48 flex items-center justify-center">
-          histogram here
+        <div className="pt-10 flex items-center justify-center">
+          <div className="h-36 w-2/3">
+            <ResponsiveBar
+              data={chartData}
+              padding={0.5}
+              colors="gray"
+              labelTextColor="white"
+              borderRadius={3}
+              tooltip="p"
+            />
+          </div>
         </div>
       </div>
 
