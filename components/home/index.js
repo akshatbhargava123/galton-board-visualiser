@@ -1,3 +1,4 @@
+import CountUp from 'react-countup';
 import cloneDeep from 'lodash/cloneDeep';
 import { useEffect, useState } from 'react';
 import { initGrid, runGaltonSimulation, TOTAL_BUCKETS } from '../../lib/galton-calculations';
@@ -37,13 +38,18 @@ function Home() {
 
         {grid.map((row, rowIdx) => (
           <div key={rowIdx} className="my-10 flex items-center justify-around">
-            {row.map((bucket, bucketIdx) => (
+            {row.map((balls, bucketIdx) => (
               <div
                 key={bucketIdx}
                 className={`w-32 h-32 group bg-gray-100 flex items-center justify-center rounded-xl font-semibold text-2xl transition duration-200 hover:shadow-lg hover:bg-gray-200 cursor-pointer select-none`}
                 onClick={() => releaseBalls(rowIdx, bucketIdx)}
               >
-                <span>{bucket}</span>
+                <CountUp
+                  start={0}
+                  end={balls}
+                  duration={2}
+                  preserveValue
+                />
               </div>
             ))}
           </div>
