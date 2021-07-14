@@ -1,9 +1,10 @@
 import CountUp from 'react-countup';
 import cloneDeep from 'lodash/cloneDeep';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { initGrid, runGaltonSimulation, TOTAL_BUCKETS } from '../../lib/galton-calculations';
 
 function Home() {
+  const boardContainerRef = useRef();
   const [grid, setGrid] = useState([]);
 
   useEffect(() => {
@@ -25,6 +26,13 @@ function Home() {
     newGrid[rowIdx][bucketIdx] = 0; // empty the bucket clicked because we released balls from there
 
     setGrid(newGrid);
+
+    // scroll to bottom only if user's focus on last row
+    if (rowBelowIdx === grid.length) {
+      setTimeout(() => {
+        boardContainerRef.current.scrollBy({ top: boardContainerRef.current.scrollHeight, behavior: 'smooth' });
+      }, 500);
+    }
   };
 
   return (
@@ -36,10 +44,16 @@ function Home() {
         </div>
       </div>
 
-      <div className="p-10 overflow-y-scroll">
+      <div className="p-10 overflow-y-scroll" style={{ height: 'calc(100vh - 16rem)' }} ref={boardContainerRef}>
 
         {grid.map((row, rowIdx) => (
-          <div key={rowIdx} className="my-10 flex items-center justify-around">
+          <div
+            key={rowIdx}
+            className={`
+              py-10 flex items-center justify-evenly animate-fade-in-down
+              ${rowIdx === grid.length - 1 ? 'bg-gray-50' : ''}
+            `}
+          >
             {row.map((balls, bucketIdx) => (
               <div
                 key={bucketIdx}
